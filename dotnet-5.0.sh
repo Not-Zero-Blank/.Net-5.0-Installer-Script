@@ -3,7 +3,22 @@ if ! command -v sudo &> /dev/null
 then
 	echo "Sudo isnt Installed!"
 	echo "Installing Sudo"
-	command=$(apt-get install sudo)
+	if command=$(apt-get install sudo); then
+    echo "Successfully Installed!"
+    else
+        if command=$(apt-get update --allow-releaseinfo-change) ; then
+            echo "Successfully Changed the Release Info System was Outdated"
+            echo "Upgrading Packages this can take a long time"
+            if command=$(apt-get upgrade); then
+            echo "Sucessfully Upgraded packages"
+            else
+            echo "Failed Upgrading Exiting"
+            exit
+            else
+            echo "Fatal Error Exiting"
+            exit
+        fi
+    fi
 fi
 echo "Found sudo installing DotNet 5.0"
 if command=$(wget https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb -O packages-microsoft-prod.deb && sudo dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb); then 
@@ -14,7 +29,7 @@ else
         echo "Runned Apt Get Successfully"
     else 
         echo "Failed apt-get upgrade"
-        if command=$(apt-get update --allow-releaseinfo-change) ; then
+            if command=$(apt-get update --allow-releaseinfo-change) ; then
             echo "Successfully Changed the Release Info System was Outdated"
         else
             echo "Fatal Error Exiting"
@@ -58,7 +73,7 @@ echo "Failed Installing dotnet Runtime!"
 exit
 fi
 echo "Checking if the Install was Successfull"
-if command=$(dotnet --info) ; then
+if command=$(dotnet) ; then
 echo "Successfully Installed NET 5.0!"
 echo "Showing List of all Installed Versions below"
 echo ""
