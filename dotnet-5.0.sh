@@ -14,6 +14,7 @@ then
             else
             echo "Failed Upgrading Exiting"
             exit
+	    fi
             else
             echo "Fatal Error Exiting"
             exit
